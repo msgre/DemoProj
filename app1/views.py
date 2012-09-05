@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
 
 import random
-from django.http import HttpResponse
+from datetime import datetime, timedelta
+
+from django.http import HttpResponse, Http404
+from django.shortcuts import render_to_response
+
 
 SENTENCES = u'''Těma smrt vlnu zpod k vrzal parku povídali vy supění pištora
 radlicích opus. Zvláštního 30 důmyslu 81 nobelovy uražené. 30, jej strhne,
@@ -21,7 +25,38 @@ lampu, mít stu ta les pud, si pešť nám chovat. Baret hadr eh jeti blahé dny
 třeskl zachází, pyšně dá lumpa ona žena oběhli. He 77 nič píchlo lože ní krvi
 kolej vás bývala? Lázní au bál?'''
 SENTENCES = [i.strip().replace('\n', ' ') for i in SENTENCES.split('.') if i.strip()]
+DATA = [(idx, item) for idx, item in enumerate(SENTENCES)]
 
-def app1_view(request):
-    return HttpResponse(SENTENCES[random.randint(0, len(SENTENCES)-1)], \
-                        mimetype='text/plain; charset=utf-8')
+DATA = [{'title': ' '.join(item.split(' ')[:3]),
+         'date': datetime.now() - timedelta(days=idx),
+         'content': item,
+         'url': '/%i/' % (idx+1, ),
+         'id': idx+1} for idx, item in enumerate(SENTENCES)]
+
+
+def app1_list(request):
+    return render_to_response('app1/list.html', {'data': DATA})
+
+
+def app1_detail(request, id):
+    item = [i for i in DATA if i['id'] == int(id)]
+    if not item:
+        raise Http404
+    item = item[0]
+
+    if item['id'] == 1:
+        # prvni
+        prev_item = None
+        next_item = item['id'] + 1
+    elif item['id'] == len(DATA):
+        # posledni
+        prev_item = item['id'] - 1
+        next_item = None
+    else:
+        # uvnitr
+        prev_item = item['id'] - 1
+        next_item = item['id'] + 1
+
+    return render_to_response('app1/detail.html', {'item': item,
+                                                   'prev_item': prev_item,
+                                                   'next_item': next_item,})

@@ -1,0 +1,33 @@
+{% extends "app1/base.html" %}
+
+{% comment %}
+    Sablona pro detail zaznamu.
+{% endcomment %}
+
+{% load markup %} {# zde musime pouzit load, protoze poterbujem natahnout filtr markdown #}
+
+{% block left %}
+    <p>Detail zaznamu <strong>{{ item.title }}</strong></p>
+    <p>
+        {% if prev_item %}
+            <a href="/{{ prev_item }}/">Predesly zaznam</a>
+        {% else %}
+            Predesly zaznam
+        {% endif %}
+    </p>
+    <p>
+        {% if next_item %}
+            <a href="/{{ next_item }}/">Nasledujici zaznam</a>
+        {% else %}
+            Nasledujici zaznam
+        {% endif %}
+    </p>
+    <hr>
+    <p><a href="/">Celkovy vypis</a></p>
+{% endblock %}
+
+{% block right %}
+    <h2>{{ item.title }}</h2>
+    <p>{{ item.date|date }}</p>
+    {{ item.content|markdown }} {# Tomasi vsimni si, zde pouzivam filtr markdown #}
+{% endblock %}

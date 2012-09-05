@@ -1,0 +1,15 @@
+{% extends "bone.html" %}
+
+{% comment %}
+    Bazova sablona aplikace app1. Urcuje zakladni rozdeleni bloku na strance.
+{% endcomment %}
+
+{% block content %}
+    <table>
+        <tr>
+            <td style="vertical-align:top;width:30%">{% block left %}{% endblock %}</td>
+            <td style="vertical-align:top;width:5%"></td>
+            <td>{% block right %}{% endblock %}</td>
+        </tr>
+    </table>
+{% endblock %}

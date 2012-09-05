@@ -1,0 +1,19 @@
+{% extends "app1/base.html" %}
+
+{% comment %}
+    Sablona pro vypis vsech zaznamu.
+{% endcomment %}
+
+{% block left %}
+    <p>Vypis vsech zaznamu</p>
+{% endblock %}
+
+{% block right %}
+    <ul>
+        {% for item in data %}
+            <li{% if forloop.counter|divisibleby:2 %} style="background-color:#eee"{% endif %}>
+                <a href="{{ item.url}}">{{ item.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
