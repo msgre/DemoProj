@@ -2,7 +2,12 @@
     Zakladni kostra stranky.
 {% endcomment %}
 <html>
+    {% load static %}
+    {% get_static_prefix as STATIC_PREFIX %}
     <head>
+        <link rel="stylesheet" href="{{ STATIC_PREFIX }}css/index.css">
+        <script type="text/javascript" src="{{ STATIC_PREFIX }}js/jquery.js"></script>
+        <script type="text/javascript" src="{{ STATIC_PREFIX }}js/table.js"></script>
     </head>
     <body>
         {% include "header.html" %}
